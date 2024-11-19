@@ -1,6 +1,7 @@
 package ru.t1.java.demo.aop;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -27,8 +28,9 @@ public class LogDataSourceError {
     @Pointcut("within(ru.t1.java.demo.*)")
     public void loggingMethods() {}
 
-    @After("@annotation(LogException)")
-    public void logError(Exception ex) {
+    @After("@annotation(ru.t1.java.demo.aop.LogException)")
+    public void logError(JoinPoint joinPoint, Exception ex) {
+        log.info("Была перехвачена ошибка в методе: {}", joinPoint.getSignature().toShortString());
         String message = createKafkaMessage(ex);
         try {
             kafkaTemplate.send(topic, message);
@@ -48,6 +50,7 @@ public class LogDataSourceError {
     }
 
     private void saveToDatabase(Exception ex) {
+        log.info("LoggingDataSourceError отработал и сохранил в БД после перехвата ошибки: {}", ex.getMessage());
         DataSourceErrorLog errorLog = DataSourceErrorLog.builder()
                 .stackTrace(ex.getStackTrace().toString())
                 .message(ex.getMessage())

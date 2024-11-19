@@ -7,7 +7,9 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,11 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MetricAspect {
 
     private static final AtomicLong START_TIME = new AtomicLong();
+    private static final String TOPIC_NAME = "t1_demo_metrics";
+    private static final long MAX_EXECUTION_TIME_MILLIS = 1000;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     @Before("@annotation(ru.t1.java.demo.aop.Track)")
     public void logExecTime(JoinPoint joinPoint) throws Throwable {
@@ -44,9 +51,18 @@ public class MetricAspect {
             result = pJoinPoint.proceed();//Important
         } finally {
             long afterTime = System.currentTimeMillis();
-            log.info("Время исполнения: {} ms", (afterTime - beforeTime));
-        }
+            long executionTime = afterTime - beforeTime;
+            log.info("Время исполнения: {} ms", executionTime);
+            if (executionTime > MAX_EXECUTION_TIME_MILLIS) {
+                String methodName = pJoinPoint.getSignature().getName();
+                String message = "Время исполнения метода '" + methodName + "' превысило лимит: " + executionTime + "ms";
 
+                kafkaTemplate.send(TOPIC_NAME, "METRICS", message);
+
+                log.info("Время работы метода: {} превысило лимит: {} ms и было отправлено в топик t1_demo_metrics",
+                        methodName, MAX_EXECUTION_TIME_MILLIS);
+            }
+        }
         return result;
     }
 
