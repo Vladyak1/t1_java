@@ -26,6 +26,7 @@ public class LogDataSourceError {
 
     @After("@annotation(LogException)")
     public void logError(Exception ex) {
+        log.info("LoggingDataSourceError отработал после перехвата ошибки: {}", ex.getMessage());
         DataSourceErrorLog errorLog = DataSourceErrorLog.builder()
                 .stackTrace(ex.getStackTrace().toString())
                 .message(ex.getMessage())
