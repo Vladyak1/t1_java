@@ -14,7 +14,7 @@ public class KafkaTransactionConsumer {
 
     private final TransactionRepository transactionRepository;
 
-    @KafkaListener(topics = "t1_demo_transactions")
+    @KafkaListener(id = "${t1.kafka.consumer.group-id}", topics = "t1_demo_transactions")
     public void listener(Transaction transaction) {
         try {
             log.info("KafkaListener получил Transaction: {}", transaction);

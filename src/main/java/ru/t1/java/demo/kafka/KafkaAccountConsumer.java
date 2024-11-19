@@ -14,7 +14,7 @@ public class KafkaAccountConsumer {
 
     private final AccountRepository accountRepository;
 
-    @KafkaListener(topics = "t1_demo_accounts")
+    @KafkaListener(id = "${t1.kafka.consumer.group-id}", topics = "t1_demo_accounts")
     public void listener(Account account) {
         try {
             log.info("KafkaListener получил Account: {}", account);
