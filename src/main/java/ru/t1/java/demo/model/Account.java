@@ -1,26 +1,48 @@
 package ru.t1.java.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import ru.t1.java.demo.model.enums.AccountType;
 
 @Getter
 @Setter
 @Entity
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "account")
 public class Account {
 
-    @Column(name = "client_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
+    private Long accountId; // Добавлен уникальный accountId
+
+    @Column(name = "client_id", nullable = false)
     private Long clientId;
 
-    @Column(name = "account_type")
+    @Column(name = "account_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
-    @Column(name = "balance")
+    @Column(name = "balance", precision = 19, scale = 2, nullable = false)
     private Double balance;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status; // Добавлен статус
+
+    @Column(name = "frozen_amount", precision = 19, scale = 2, nullable = false)
+    private Double frozenAmount = 0.0; // Добавлен frozenAmount с начальным значением 0.0
+
+    public enum AccountStatus {
+        ARRESTED, BLOCKED, CLOSED, OPEN
+    }
+
+    public enum AccountType {
+        DEBIT,
+        CREDIT
+    }
+
+    public Account() {
+        this.status = AccountStatus.OPEN; // Статус по умолчанию
+    }
 }
