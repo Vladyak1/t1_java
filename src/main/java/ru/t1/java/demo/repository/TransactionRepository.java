@@ -9,4 +9,8 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     List<Transaction> findByClientIdAndAccountIdAndTimestampAfter(Long clientId, Long accountId, Instant timestamp);
+
+    List<Transaction> findByAccountId(Long accountId);
+
+    List<Transaction> findByAccountIdAndStatus(Long accountId, Transaction.TransactionStatus transactionStatus);
 }
