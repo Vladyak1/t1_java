@@ -24,20 +24,20 @@ public class Transaction extends AbstractPersistable<Long> {
     private Long accountId;
 
     @Column(name = "transaction_id", unique = true, nullable = false)
-    private String transactionId; //Добавлен уникальный transactionId
+    private String transactionId;
 
     @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING) //Важно для Enum
-    private TransactionStatus status; //Добавлен статус
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
 
     @Column(name = "timestamp", nullable = false)
-    private Instant timestamp; //Добавлен timestamp
+    private Instant timestamp;
 
 
     public Transaction() {
         this.transactionId = java.util.UUID.randomUUID().toString();
         this.timestamp = Instant.now();
-        this.status = TransactionStatus.REQUESTED; // Default status
+        this.status = TransactionStatus.REQUESTED;
     }
 
 

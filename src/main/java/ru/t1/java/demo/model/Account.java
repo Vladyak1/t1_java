@@ -14,7 +14,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
-    private Long accountId; // Добавлен уникальный accountId
+    private Long accountId;
 
     @Column(name = "client_id", nullable = false)
     private Long clientId;
@@ -28,10 +28,10 @@ public class Account {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private AccountStatus status; // Добавлен статус
+    private AccountStatus status;
 
     @Column(name = "frozen_amount", precision = 19, scale = 2, nullable = false)
-    private Double frozenAmount = 0.0; // Добавлен frozenAmount с начальным значением 0.0
+    private Double frozenAmount = 0.0;
 
     public enum AccountStatus {
         ARRESTED, BLOCKED, CLOSED, OPEN
@@ -43,6 +43,6 @@ public class Account {
     }
 
     public Account() {
-        this.status = AccountStatus.OPEN; // Статус по умолчанию
+        this.status = AccountStatus.OPEN;
     }
 }
