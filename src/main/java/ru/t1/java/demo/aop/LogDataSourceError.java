@@ -2,7 +2,7 @@ package ru.t1.java.demo.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class LogDataSourceError {
     @Pointcut("within(ru.t1.java.demo.*)")
     public void loggingMethods() {}
 
-    @After("@annotation(ru.t1.java.demo.aop.LogException)")
+    @AfterThrowing(pointcut = "logDataSourceError()", throwing = "ex")
     public void logError(JoinPoint joinPoint, Exception ex) {
         log.info("Была перехвачена ошибка в методе: {}", joinPoint.getSignature().toShortString());
         String message = createKafkaMessage(ex);
