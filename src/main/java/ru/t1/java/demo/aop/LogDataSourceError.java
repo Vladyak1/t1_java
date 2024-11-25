@@ -25,12 +25,12 @@ public class LogDataSourceError {
     private final String topic = "t1_demo_metrics";
     private final String errorType = "DATA_SOURCE";
 
-    @Pointcut("within(ru.t1.java.demo.*)")
-    public void loggingMethods() {}
+    @Pointcut("execution(* ru.t1.java.demo.repository.*.*(..))")
+    public void repositoryMethods() {}
 
-    @AfterThrowing(pointcut = "logDataSourceError()", throwing = "ex")
+    @AfterThrowing(pointcut = "repositoryMethods()", throwing = "ex")
     public void logError(JoinPoint joinPoint, Exception ex) {
-        log.info("Была перехвачена ошибка в методе: {}", joinPoint.getSignature().toShortString());
+        log.error("Ошибка в методе репозитория: {}", joinPoint.getSignature().toShortString(), ex);
         String message = createKafkaMessage(ex);
         try {
             kafkaTemplate.send(topic, message);
