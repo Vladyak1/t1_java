@@ -25,7 +25,7 @@ public class ResultAspect {
 
         Client client = Client.builder()
                 .build();
-        client.setId(42L);
+//        client.setId(42L);
         ClientDto dto = new ClientDto();
 
         try {
