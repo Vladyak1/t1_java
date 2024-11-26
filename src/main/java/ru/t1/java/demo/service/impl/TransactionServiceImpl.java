@@ -45,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
                 message.put("amount", transaction.getAmount());
                 message.put("balance", account.getBalance());
 
-                kafkaProducer.sendMessage("t1_demo_transaction_accept", message);
+                kafkaProducer.sendTo("t1_demo_transaction_accept", message);
 
                 log.info("Транзакция проведена успешно, сообщение отправлено в Kafka.");
             } else {

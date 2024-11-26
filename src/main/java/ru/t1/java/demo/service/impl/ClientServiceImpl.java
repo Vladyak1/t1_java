@@ -54,7 +54,7 @@ public class ClientServiceImpl implements ClientService {
 //                kafkaClientProducer.send(client.getId());
 //            }
 //        }
-        client.setId(222L);
+//        client.setId(222L);
         return client;
     }
 

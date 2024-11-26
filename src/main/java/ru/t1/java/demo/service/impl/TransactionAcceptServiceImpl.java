@@ -102,7 +102,7 @@ public class TransactionAcceptServiceImpl implements TransactionAcceptService {
         message.put("status", status);
         message.put("clientId", clientId);
         message.put("accountId", accountId);
-        kafkaProducer.sendMessage("t1_demo_transaction_result", message);
+        kafkaProducer.sendTo("t1_demo_transaction_result", message);
     }
 
 
