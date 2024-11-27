@@ -85,12 +85,13 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter { // Sp
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                                auth.requestMatchers("/api/auth/**").anonymous()
+                                auth.requestMatchers("/api/auth/**").permitAll()
                                         .requestMatchers("/parse/**").anonymous()
                                         .requestMatchers("/parse").anonymous()
                                         .requestMatchers("/actuator/prometheus").anonymous()
                                         .requestMatchers("/actuator/*").anonymous()
-                                        .anyRequest().anonymous()
+                                        .requestMatchers("/transaction-accept/**").permitAll()
+                                        .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());
