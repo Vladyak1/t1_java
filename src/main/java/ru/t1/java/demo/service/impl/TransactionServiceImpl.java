@@ -13,6 +13,7 @@ import ru.t1.java.demo.repository.ClientRepository;
 import ru.t1.java.demo.repository.TransactionRepository;
 import ru.t1.java.demo.service.TransactionService;
 import ru.t1.java.demo.service.AccountService;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,9 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountService accountService;
     private final ClientRepository clientRepository;
     private final KafkaTransactionProducer kafkaProducer;
+
+    @Value("${t1.maxRejectedTransactions}")
+    private int maxRejectedTransactions;
 
 
     @Override
@@ -50,10 +54,14 @@ public class TransactionServiceImpl implements TransactionService {
                 message.put("balance", account.getBalance());
 
                 kafkaProducer.sendTo("t1_demo_transaction_accept", message);
-
                 log.info("Транзакция проведена успешно, сообщение отправлено в Kafka.");
             } else {
                 log.warn("Account не найден или не в статусе OPEN. Транзакция не проведена.");
+            }
+            List<Transaction> rejectedTransactions = transactionRepository.findByClientIdAndStatus(transaction.getClientId(), TransactionStatus.REJECTED);
+            if (rejectedTransactions.size() >= maxRejectedTransactions) {
+                account.setStatus(Account.AccountStatus.ARRESTED);
+                accountRepository.save(account);
             }
         } catch (Exception e) {
             log.error("Ошибка выполнения транзакции: ", e);
