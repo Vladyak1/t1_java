@@ -1,5 +1,6 @@
 package ru.t1.java.demo.aop;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -15,6 +16,7 @@ import ru.t1.java.demo.repository.DataSourceErrorLogRepository;
 @Slf4j
 @Aspect
 @Component
+@RequiredArgsConstructor
 @Order(0)
 public class LogDataSourceError {
 

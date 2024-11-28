@@ -1,8 +1,6 @@
 package ru.t1.java.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
@@ -14,6 +12,10 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "data_source_error_log")
 public class DataSourceErrorLog {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "stack_trace")
     private String stackTrace;

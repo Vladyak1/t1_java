@@ -1,6 +1,15 @@
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   application:
     name: t1-java-demo
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
   datasource:
     jdbcUrl: jdbc:postgresql://${DB_HOST:localhost:5432}/t1_demo
     username: postgres
@@ -9,6 +18,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
   liquibase:
     enabled: true
@@ -71,6 +83,8 @@ t1:
     listener:
       poll-timeout: 1000
   maxRejectedTransactions: 5
+  transactionThresholdCount: 5
+  transactionThresholdTimeSeconds: 10
 
 
 track:
