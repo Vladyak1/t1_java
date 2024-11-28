@@ -32,10 +32,10 @@ public class TransactionAcceptServiceImpl implements TransactionAcceptService {
     private final AccountService accountService;
     private final KafkaTransactionProducer kafkaProducer;
 
-    @Value("${transaction.threshold.count}")
+    @Value("${t1.transactionThresholdCount}")
     private int transactionThresholdCount;
 
-    @Value("${transaction.threshold.time.seconds}")
+    @Value("${t1.transactionThresholdTimeSeconds}")
     private long transactionThresholdTimeSeconds;
 
     private final ConcurrentHashMap<String, TransactionCounter> transactionCounters = new ConcurrentHashMap<>();
