@@ -86,6 +86,14 @@ t1:
   transactionThresholdCount: 5
   transactionThresholdTimeSeconds: 10
 
+unblock:
+  scheduler:
+    clients.count: 10
+    accounts.count: 10
+    period: 3600000  # 1 hour in milliseconds
+
+service3:
+  url: http://localhost:8083
 
 track:
   errors-to-track: JsonParseException, IOException
