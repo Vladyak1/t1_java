@@ -44,7 +44,7 @@ class ClientServiceIntegrationTest {
         client.setLastName("Doe");
 
         Client client2 = new Client();
-        client2.setId(422222L);
+//        client2.setId(422222L);
         client2.setFirstName("John");
         client2.setLastName("Doe");
 
