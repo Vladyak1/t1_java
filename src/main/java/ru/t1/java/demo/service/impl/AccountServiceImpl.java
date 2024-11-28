@@ -22,7 +22,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void changeBalance(Account account, BigDecimal amount) {
-        account.setBalance(account.getBalance() + amount.doubleValue()); //Изменение баланса
+        account.setBalance(account.getBalance() + amount.doubleValue());
         accountRepository.save(account);
     }
 }

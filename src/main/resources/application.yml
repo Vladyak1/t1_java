@@ -6,6 +6,10 @@ spring:
     username: postgres
     password: "0000"
     driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   liquibase:
     enabled: true
     default-schema: t1_demo
@@ -66,6 +70,7 @@ t1:
       client_transactions: t1_demo_client_transactions
     listener:
       poll-timeout: 1000
+  maxRejectedTransactions: 5
 
 
 track:
