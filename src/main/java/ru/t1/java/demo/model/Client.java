@@ -1,8 +1,6 @@
 package ru.t1.java.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -15,6 +13,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Table(name = "client")
 public class Client extends AbstractPersistable<Long> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
+    private Long clientId;
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -23,5 +26,11 @@ public class Client extends AbstractPersistable<Long> {
 
     @Column(name = "middle_name")
     private String middleName;
+
+    @Column(name = "blocked_for")
+    private Boolean blockedFor;
+
+    @Column(name = "blocked_whom")
+    private String blockedWhom;
 
 }
